@@ -1,4 +1,5 @@
 import React from "react";
+import ticketsImage from "./../img/tickets.png";
 
 // We separate our header into its own component;
 // After all, it has nothing to do with tickets, or a button for a form.
@@ -9,7 +10,11 @@ import React from "react";
 // That's because our component is only returning _one_ element.
 function Header() {
   return (
-    <h1>Help Queue</h1>
+    <React.Fragment>
+      <h1>Help Queue
+      <img src={ticketsImage} alt="A couple of tickets." />
+      </h1>
+    </React.Fragment>
   );
 }
 
