@@ -1,22 +1,46 @@
 import React from "react";
 import Ticket from "./Ticket";
 
-// We'll pass props down to a child component using JSX tags.
-// It's common to put each prop on a separate line, and while not required,
-// it does make it easier to read what's being passed down to the child components
+const mainTicketList = [
+  {
+    names: "Thato and Haley",
+    location: "3A",
+    issue: "Firebase won't save records. Help."
+  },
+  {
+    names: "Sleater and Kinney",
+    location: "4B",
+    issue: "Prop types are throwing an error."
+  },
+  {
+    names: "Imani & Jacob",
+    location: "9F",
+    issue: "Child component isn't rendering."
+  }
+];
+
+// We'll use map to loop through our list of tickets.
+// On each iteration, it will create a new Ticket with props
+// that correspond to a ticket in the mainTicketList
+
+// We also add a key value to each ticket, corresponding to its index.
+// If we don't do this, we'll get an error:
+// "Warning: Each child in an array or iterator should have a unique 'key' prop."
+
+// Having unique keys helps React differentiate between similar components,
+// so it can identify which have been updated, added, or removed from the list
+// during its virtual DOM reconciliation.
 function TicketList() {
   return (
     <React.Fragment>
-      <Ticket
-        location="3A"
-        names="Thato and Haley"
-        issue="Firebase will not save records!"
-      />
-      <Ticket 
-        location="4B"
-        names="Sleater and Kinney"
-        issue="Prop types are throwing an error."
-      />
+      {mainTicketList.map((ticket, index) => 
+        <Ticket 
+          names={ticket.names}
+          location={ticket.location}
+          issue={ticket.issue}
+          key={index}
+        />
+      )}
     </React.Fragment>
   );
 }
