@@ -1,7 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 // Remember, JSX JavaScript expressions must always be wrapped in curly braces.
-// Conent inside {} will be evaluated instead of literally rendered.
+// Content inside {} will be evaluated instead of literally rendered.
 function Ticket(props) {
   return (
     <React.Fragment>
@@ -11,5 +12,11 @@ function Ticket(props) {
     </React.Fragment>
   );
 }
+
+Ticket.propTypes = {
+  names: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired,
+  issue: PropTypes.string
+};
 
 export default Ticket;
