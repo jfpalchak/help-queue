@@ -11,25 +11,32 @@ class TicketControl extends React.Component {
     };
   }
 
+  // handleClick toggles our state boolean:
   handleClick = () => {
-    this.setState({formVisibleOnPage: true});
+    this.setState(prevState => ({
+      // We pass in the current state of the formVisibleOnPage boolean to prevState. 
+      // Now that we know this value, 
+      // we can say the new state should be !prevState.formVisibleOnPage (the opposite of the old state).
+      formVisibleOnPage: !prevState.formVisibleOnPage
+    }));
   }
 
   // Conditional Rendering for our TicketList/NewTicketForm:
   render() {
     let currentlyVisibleState = null;
-    let addTicketButton = null;
+    let buttonText = null;
     if (this.state.formVisibleOnPage) {
-      currentlyVisibleState = <NewTicketForm />
+      currentlyVisibleState = <NewTicketForm />;
+      buttonText = "Cancel";
     } else {
-      currentlyVisibleState = <TicketList />
-      addTicketButton = <button onClick={this.handleClick}>Add Ticket</button>
+      currentlyVisibleState = <TicketList />;
+      buttonText = "Add Ticket";
     }
 
     return(
       <React.Fragment>
         {currentlyVisibleState}
-        {addTicketButton}
+        <button onClick={this.handleClick}>{buttonText}</button>
       </React.Fragment>
     );
   }
