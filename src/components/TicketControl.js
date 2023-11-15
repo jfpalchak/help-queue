@@ -58,6 +58,8 @@ class TicketControl extends React.Component {
       buttonText = "Return to Ticket List";
     } else {
       currentlyVisibleState = <TicketList 
+                                // we pass the state of our entire ticket list
+                                // for TicketList to iterate over and render
                                 ticketList={this.state.mainTicketList}
                                 // we pass our event handler as a prop,
                                 // which we'll again pass to each individual ticket
