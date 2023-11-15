@@ -7,12 +7,13 @@ class TicketControl extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formVisibleOnPage: false, // our default state: show the tickets, not the form
-      mainTicketList: []
+      formVisibleOnPage: false, // state slice 1: local state (default does not show form)
+      mainTicketList: [], // state slice 2: shared state
+      selectedTicket: null // state slice 3: local state (default no ticket is selected)
     };
-  }
+  }  
 
-  // handleClick toggles our state boolean:
+  // handleClick toggles our state boolean on whether to show the form or not:
   handleClick = () => {
     this.setState(prevState => ({
       // We pass in the current state of the formVisibleOnPage boolean to prevState. 
@@ -32,6 +33,15 @@ class TicketControl extends React.Component {
     // see the list of tickets again, not the form.
     this.setState({mainTicketList: newMainTicketList,
                   formVisibleOnPage: false });
+  }
+
+  // this method handles click event on a ticket
+  handleChangingSelectedTicket = (id) => {
+    // because we're using UUID's now, we know that only one ticket will match the id
+    // NOTE: because filter() returns an array, we use bracket notation to specify we want
+    // the first (and only element) in the returned array:
+    const selectedTicket = this.state.mainTicketList.filter(ticket => ticket.id === id)[0];
+    this.setState({selectedTicket: selectedTicket});
   }
 
   // Conditional Rendering for our TicketList/NewTicketForm:
