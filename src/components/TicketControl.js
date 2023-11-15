@@ -23,6 +23,7 @@ class TicketControl extends React.Component {
   }
 
   // this method handles the process of adding a new ticket to our mainTicketList state
+  // we'll pass this on to our form component as a prop!
   handleAddingNewTicketToList = (newTicket) => {
     // instead of directly altering the array, we make a new _COPY_ of the array,
     // which is what we set the new value of mainTicketList to with setState
@@ -38,7 +39,7 @@ class TicketControl extends React.Component {
     let currentlyVisibleState = null;
     let buttonText = null;
     if (this.state.formVisibleOnPage) {
-      currentlyVisibleState = <NewTicketForm />;
+      currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList} />;
       buttonText = "Return to Ticket List";
     } else {
       currentlyVisibleState = <TicketList ticketList={this.state.mainTicketList} />;
