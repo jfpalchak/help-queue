@@ -67,18 +67,38 @@ class TicketControl extends React.Component {
     });
   }
 
+  // this method handles the rendering of our edit form
   handleEditClick = () => {
     console.log("handleEditClick reached!");
     this.setState({editing: true});
   }
 
-  // Conditional Rendering for our TicketList/NewTicketForm:
+  // this method handles updating our shared state with the updated ticket,
+  // as well as updating local state to decide what is rendered to the DOM
+  handleEditingTicketInList = (ticketToEdit) => {
+    // filter out the OLD version of the ticket we just edited,
+    // then concat our NEWly updated version to this filtered list
+    const editedMainTicketList = this.state.mainTicketList
+      .filter(ticket => ticket.id !== this.state.selectedTicket.id)
+      .concat(ticketToEdit);
+    this.setState({
+      mainTicketList: editedMainTicketList,
+      editing: false,
+      selectedTicket: null
+    });
+    
+  }
+
+  // Conditional Rendering for TicketList/NewTicketForm/TicketDetail/EditTicketForm:
   render() {
     let currentlyVisibleState = null;
     let buttonText = null;
 
     if (this.state.editing) {
-      currentlyVisibleState= <EditTicketForm ticket={this.state.selectedTicket} />
+      currentlyVisibleState= <EditTicketForm 
+                                ticket={this.state.selectedTicket} 
+                                onEditClick={this.handleEditingTicketInList}
+                              />
       buttonText = "Return to Ticket List";
     }
     else if (this.state.selectedTicket != null) {
