@@ -1,6 +1,7 @@
 import React from "react";
 import NewTicketForm from "./NewTicketForm";
 import TicketList from "./TicketList";
+import TicketDetail from "./TicketDetail";
 
 class TicketControl extends React.Component {
 
@@ -22,7 +23,7 @@ class TicketControl extends React.Component {
         formVisibleOnPage: false,
         selectedTicket: null
       });
-      
+
     } else {
 
       this.setState(prevState => ({
