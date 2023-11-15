@@ -22,6 +22,17 @@ class TicketControl extends React.Component {
     }));
   }
 
+  // this method handles the process of adding a new ticket to our mainTicketList state
+  handleAddingNewTicketToList = (newTicket) => {
+    // instead of directly altering the array, we make a new _COPY_ of the array,
+    // which is what we set the new value of mainTicketList to with setState
+    const newMainTicketList = this.state.mainTicketList.concat(newTicket);
+    // We also make sure formVisibleOnPage is set to false, so the user can
+    // see the list of tickets again, not the form.
+    this.setState({mainTicketList: newMainTicketList,
+                  formVisibleOnPage: false });
+  }
+
   // Conditional Rendering for our TicketList/NewTicketForm:
   render() {
     let currentlyVisibleState = null;
