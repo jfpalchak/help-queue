@@ -8,7 +8,7 @@ function TicketDetail(props) {
   // if we didn't, we'd need to say 'props.ticket.location',
   // instead of just 'ticket.location'
   // the ticket prop passed down from TicketControl is an object containing an object!
-  const { ticket, onClickingDelete } = props;
+  const { ticket, onClickingDelete, onClickingEdit } = props;
 
   return (
     <React.Fragment>
@@ -16,6 +16,7 @@ function TicketDetail(props) {
       <h3>{ticket.location} - {ticket.names}</h3>
       <p><em>{ticket.issue}</em></p>
 
+      <button onClick={onClickingEdit}>Update Ticket</button>
       <button onClick={() => onClickingDelete(ticket.id)}>Close Ticket</button>
 
       <hr/>
@@ -25,7 +26,8 @@ function TicketDetail(props) {
 
 TicketDetail.propTypes = {
   ticket: PropTypes.object,
-  onClickingDelete: PropTypes.func
+  onClickingDelete: PropTypes.func,
+  onClickingEdit: PropTypes.func
 };
 
 
