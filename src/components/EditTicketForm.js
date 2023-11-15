@@ -11,7 +11,7 @@ function EditTicketForm(props) {
   function handleEditTicketFormSubmission(event) {
     event.preventDefault();
     // utilize the event handler method passed in as a prop:
-    props.onEditTicket({
+    props.onEditClick({
       names: event.target.names.value,
       location: event.target.location.value,
       issue: event.target.issue.value,
@@ -31,7 +31,7 @@ function EditTicketForm(props) {
 
 EditTicketForm.propTypes = {
   ticket: PropTypes.object,
-  onEditTicket: PropTypes.func
+  onEditClick: PropTypes.func
 };
 
 export default EditTicketForm;
