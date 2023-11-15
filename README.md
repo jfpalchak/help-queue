@@ -1,6 +1,6 @@
 # Help Queue
 
-#### A simple React application for displaying multiple help tickets. 
+#### A simple React application for conditionally rendering multiple different components. 
 
 #### By Joey Palchak
 
@@ -13,7 +13,7 @@
 
 ## Description
 
-Help Queue is a simple React application intended only for practice & learning purposes. The functionality of the application loops through a list of hard-coded help tickets to display on the DOM.
+Help Queue is a simple React application intended only for practice & learning purposes. The application conditionally renders a number of different components: a list of tickets, a form to create a ticket, or a form to update or delete an existing ticket - all depending on how the user interacts with the application. 
 
 ## Setup & Installation
 
