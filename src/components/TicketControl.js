@@ -54,6 +54,16 @@ class TicketControl extends React.Component {
     this.setState({selectedTicket: selectedTicket});
   }
 
+  // this method handles deleting a targeted ticket
+  handleDeletingTicket = (id) => {
+    // filter out the specific ticket when we create a copy of our new list:
+    const newMainTicketList = this.state.mainTicketList.filter(ticket => ticket.id !== id);
+    this.setState({
+      mainTicketList: newMainTicketList,
+      selectedTicket: null
+    });
+  }
+
   // Conditional Rendering for our TicketList/NewTicketForm:
   render() {
     let currentlyVisibleState = null;
