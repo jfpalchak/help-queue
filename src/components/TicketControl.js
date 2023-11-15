@@ -23,7 +23,8 @@ class TicketControl extends React.Component {
 
       this.setState({
         formVisibleOnPage: false,
-        selectedTicket: null
+        selectedTicket: null,
+        editing: false
       });
 
     } else {
