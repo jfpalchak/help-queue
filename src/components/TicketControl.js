@@ -10,7 +10,8 @@ class TicketControl extends React.Component {
     this.state = {
       formVisibleOnPage: false, // state slice 1: local state (default does not show form)
       mainTicketList: [], // state slice 2: shared state
-      selectedTicket: null // state slice 3: local state (default no ticket is selected)
+      selectedTicket: null, // state slice 3: local state (default no ticket is selected)
+      editing: false // state slice 4: local state (default no ticket is being edited)
     };
   }  
 
@@ -64,6 +65,11 @@ class TicketControl extends React.Component {
     });
   }
 
+  handleEditClick = () => {
+    console.log("handleEditClick reached!");
+    this.setState({editing: true});
+  }
+
   // Conditional Rendering for our TicketList/NewTicketForm:
   render() {
     let currentlyVisibleState = null;
@@ -73,6 +79,7 @@ class TicketControl extends React.Component {
       currentlyVisibleState = <TicketDetail 
                                 ticket={this.state.selectedTicket} 
                                 onClickingDelete={this.handleDeletingTicket}
+                                onClickingEdit={this.handleEditClick}
                               />;
       buttonText = "Return to Ticket List";
     }
