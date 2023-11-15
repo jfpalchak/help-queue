@@ -13,14 +13,23 @@ class TicketControl extends React.Component {
     };
   }  
 
-  // handleClick toggles our state boolean on whether to show the form or not:
+  // handleClick toggles our state boolean on whether to show the form or not,
+  // depending on if a ticket is currently showing or not showing
   handleClick = () => {
-    this.setState(prevState => ({
-      // We pass in the current state of the formVisibleOnPage boolean to prevState. 
-      // Now that we know this value, 
-      // we can say the new state should be !prevState.formVisibleOnPage (the opposite of the old state).
-      formVisibleOnPage: !prevState.formVisibleOnPage
-    }));
+    if (this.state.selectedTicket != null) {
+
+      this.setState({
+        formVisibleOnPage: false,
+        selectedTicket: null
+      });
+      
+    } else {
+
+      this.setState(prevState => ({
+        formVisibleOnPage: !prevState.formVisibleOnPage
+      }));
+
+    }
   }
 
   // this method handles the process of adding a new ticket to our mainTicketList state
