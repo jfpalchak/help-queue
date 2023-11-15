@@ -1,14 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-// Remember, JSX JavaScript expressions must always be wrapped in curly braces.
-// Content inside {} will be evaluated instead of literally rendered.
 function Ticket(props) {
   return (
     <React.Fragment>
-      <h3>{props.location} - {props.names}</h3>
-      <p><em>{props.issue}</em></p>
-      <hr/>
+      <div onClick={() => props.whenTicketClicked(props.id)}>
+        <h3>{props.location} - {props.names}</h3>
+        <p><em>{props.issue}</em></p>
+        <hr/>
+      </div>
     </React.Fragment>
   );
 }
@@ -16,7 +16,9 @@ function Ticket(props) {
 Ticket.propTypes = {
   names: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
-  issue: PropTypes.string
+  issue: PropTypes.string,
+  id: PropTypes.string,
+  whenTicketClicked: PropTypes.func
 };
 
 export default Ticket;
