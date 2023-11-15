@@ -7,6 +7,8 @@ function NewTicketForm(props) {
   // this method handles the Submit event for our form:
   function handleNewTicketFormSubmission(event) {
     event.preventDefault();
+    // we utilize the method we passed through as a prop
+    // to update the parent's state with our new ticket
     props.onNewTicketCreation({
       names: event.target.names.value,
       location: event.target.location.value,
