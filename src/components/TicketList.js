@@ -6,12 +6,9 @@ function TicketList(props) {
   return (
     <React.Fragment>
       <hr/>
-      {/* we'll loop through our ticketList prop passed down from TicketControl */}
-      {props.ticketList.map((ticket) => 
+      {/* Now we need to map over the values of an object, not an array: */}
+      {Object.values(props.ticketList).map((ticket) => 
         <Ticket 
-          // we pass our event handler as a prop to each ticket,
-          // because the TICKET will handle determining whether it has been clicked.
-          // note that this prop is separate from a ticket's properties!
           whenTicketClicked={props.onTicketSelection}
           names={ticket.names}
           location={ticket.location}
@@ -26,7 +23,8 @@ function TicketList(props) {
 }
 
 TicketList.propTypes = {
-  ticketList: PropTypes.array,
+  // The PropType for ticketList is now an object:
+  ticketList: PropTypes.object,
   onTicketSelection: PropTypes.func // specify prop type for the event handler prop
 };
 
