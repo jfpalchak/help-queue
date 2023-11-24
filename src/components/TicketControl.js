@@ -4,7 +4,8 @@ import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
 import { connect } from "react-redux";
-import Ticket from "./Ticket";
+import PropTypes from "prop-types";
+
 
 class TicketControl extends React.Component {
 
@@ -196,6 +197,12 @@ class TicketControl extends React.Component {
 // The return value of connect() is the TicketControl component itself,
 // but now with dispatch() and mapStateToProps()
 
+// Because we are mapping state from the Redux store to our component's props
+// with mapStateToProps, we need to add prop types to our component:
+TicketControl.propTypes = {
+  mainTicketList: PropTypes.object
+};
+
 const mapStateToProps = state => {
   return {
     mainTicketList: state
@@ -205,7 +212,6 @@ const mapStateToProps = state => {
 };
 
 // We pass our defined mapStateToProps function into the connect() function:
-
 TicketControl = connect(mapStateToProps)(TicketControl);
 
 export default TicketControl;
