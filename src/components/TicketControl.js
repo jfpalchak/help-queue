@@ -3,6 +3,8 @@ import NewTicketForm from "./NewTicketForm";
 import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
+import { connect } from "react-redux";
+import Ticket from "./Ticket";
 
 class TicketControl extends React.Component {
 
@@ -132,5 +134,16 @@ class TicketControl extends React.Component {
     );
   }
 }
+
+// NOTE:
+// Because our goal is to keep things simple, we'll add the connect() function
+// to the one component in our application that already has state: TicketControl
+// This way, we'll mostly only need to update the one component to integrate Redux in
+// our application. 
+
+// We'll wrap our TicketControl component with the connect() function to add new functionality:
+// The return value of connect() is the TicketControl component itself,
+// but now with dispatch() and mapStateToProps()
+TicketControl = connect()(TicketControl);
 
 export default TicketControl;
