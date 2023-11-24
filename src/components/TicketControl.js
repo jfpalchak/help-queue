@@ -10,11 +10,11 @@ class TicketControl extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
-      formVisibleOnPage: false, // state slice 1: local state (default does not show form)
-      mainTicketList: [], // state slice 2: shared state
-      selectedTicket: null, // state slice 3: local state (default no ticket is selected)
-      editing: false // state slice 4: local state (default no ticket is being edited)
+      formVisibleOnPage: false, // local state (default does not show form)
+      selectedTicket: null, // local state (default no ticket is selected)
+      editing: false // local state (default no ticket is being edited)
     };
   }  
 
@@ -41,13 +41,30 @@ class TicketControl extends React.Component {
   // this method handles the process of adding a new ticket to our mainTicketList state
   // we'll pass this on to our form component as a prop!
   handleAddingNewTicketToList = (newTicket) => {
-    // instead of directly altering the array, we make a new _COPY_ of the array,
-    // which is what we set the new value of mainTicketList to with setState
-    const newMainTicketList = this.state.mainTicketList.concat(newTicket);
-    // We also make sure formVisibleOnPage is set to false, so the user can
-    // see the list of tickets again, not the form.
-    this.setState({mainTicketList: newMainTicketList,
-                  formVisibleOnPage: false });
+    const { dispatch } = this.props;
+    const { id, names, location, issue } = newTicket;
+    const action = {
+      type: 'ADD_TICKET',
+      id: id,
+      names: names,
+      location: location,
+      issue: issue
+    };
+
+    // We dispatch our action and update the store:
+    dispatch(action);
+
+    // In a larger application, too much local state cluttering up the Redux store
+    // could become a code smell -> and because it's not entirely necessary,
+    // we'll keep managing the local state here with this component method.
+    this.setState({
+      formVisibleOnPage: false
+    });
+
+    // REDUX REFACTOR, FROM:
+    // const newMainTicketList = this.state.mainTicketList.concat(newTicket);
+    // this.setState({mainTicketList: newMainTicketList,
+    //               formVisibleOnPage: false });
   }
 
   // this method handles click event on a ticket
@@ -61,12 +78,24 @@ class TicketControl extends React.Component {
 
   // this method handles deleting a targeted ticket
   handleDeletingTicket = (id) => {
-    // filter out the specific ticket when we create a copy of our new list:
-    const newMainTicketList = this.state.mainTicketList.filter(ticket => ticket.id !== id);
+    const { dispatch } = this.props;
+    const action = {
+      type: 'DELETE_TICKET',
+      id: id
+    };
+
+    dispatch(action);
+
     this.setState({
-      mainTicketList: newMainTicketList,
       selectedTicket: null
     });
+    
+    // REDUX REFACTOR, from:
+    // const newMainTicketList = this.state.mainTicketList.filter(ticket => ticket.id !== id);
+    // this.setState({
+    //   mainTicketList: newMainTicketList,
+    //   selectedTicket: null
+    // });
   }
 
   // this method handles the rendering of our edit form
@@ -78,16 +107,38 @@ class TicketControl extends React.Component {
   // this method handles updating our shared state with the updated ticket,
   // as well as updating local state to decide what is rendered to the DOM
   handleEditingTicketInList = (ticketToEdit) => {
-    // filter out the OLD version of the ticket we just edited,
-    // then concat our NEWly updated version to this filtered list
-    const editedMainTicketList = this.state.mainTicketList
-      .filter(ticket => ticket.id !== this.state.selectedTicket.id)
-      .concat(ticketToEdit);
+    
+    const { dispatch } = this.props;
+    const { id, names, location, issue } = ticketToEdit;
+    const action = {
+      // NOTE: We use ADD_TICKET to edit our ticket as well.
+      // The only difference between adding or editing a ticket is the id property:
+      // If it's a new id, a new ticket is added to the store.
+      // If it's an id that already exists, that existing ticket is replaced.
+      // It might be more accurate to rename this action 'ADD_OR_UPDATE_TICKET'.
+      type: 'ADD_TICKET',
+      id: id,
+      names: names,
+      location: location,
+      issue: issue
+    };
+
+    dispatch(action);
+
     this.setState({
-      mainTicketList: editedMainTicketList,
       editing: false,
       selectedTicket: null
     });
+
+    // REDUX REFACTOR, from:
+    // const editedMainTicketList = this.state.mainTicketList
+    //   .filter(ticket => ticket.id !== this.state.selectedTicket.id)
+    //   .concat(ticketToEdit);
+    // this.setState({
+    //   mainTicketList: editedMainTicketList,
+    //   editing: false,
+    //   selectedTicket: null
+    // });
     
   }
 
