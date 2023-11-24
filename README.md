@@ -1,6 +1,6 @@
 # Help Queue
 
-#### A simple React application for conditionally rendering multiple different components. 
+#### A simple React application implementing Redux for state management. 
 
 #### By Joey Palchak
 
@@ -8,12 +8,16 @@
 
 - JavaScript
 - React
+- Redux
 - CSS
 - HTML
 
 ## Description
 
-Help Queue is a simple React application intended only for practice & learning purposes. The application conditionally renders a number of different components: a list of tickets, a form to create a ticket, or a form to update or delete an existing ticket - all depending on how the user interacts with the application. 
+Help Queue is a simple React application intended only for practice & learning purposes. The application implements Redux for state management, and conditionally renders a number of different components: 
+* a list of tickets, 
+* a form to create a ticket, 
+* or a form to update or delete an existing ticket
 
 ## Setup & Installation
 
