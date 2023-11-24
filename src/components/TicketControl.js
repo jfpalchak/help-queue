@@ -70,11 +70,16 @@ class TicketControl extends React.Component {
 
   // this method handles click event on a ticket
   handleChangingSelectedTicket = (id) => {
-    // because we're using UUID's now, we know that only one ticket will match the id
-    // NOTE: because filter() returns an array, we use bracket notation to specify we want
-    // the first (and only element) in the returned array:
-    const selectedTicket = this.state.mainTicketList.filter(ticket => ticket.id === id)[0];
+    // mainTicketList is no longer a part of this.state, but instead the Redux store:
+    // Now we need to pass it into the component via this.props.
+    // Also, mainTicketList is an _object_ now, not an array:
+    // we can bypass filter and just use bracket notation instead.
+    const selectedTicket = this.props.mainTicketList[id];
     this.setState({selectedTicket: selectedTicket});
+
+    // REDUX REFACTOR, from:
+    // const selectedTicket = this.state.mainTicketList.filter(ticket => ticket.id === id)[0];
+    // this.setState({selectedTicket: selectedTicket});
   }
 
   // this method handles deleting a targeted ticket
@@ -170,7 +175,8 @@ class TicketControl extends React.Component {
       currentlyVisibleState = <TicketList 
                                 // we pass the state of our entire ticket list
                                 // for TicketList to iterate over and render
-                                ticketList={this.state.mainTicketList}
+                                // REDUX REFACTOR, from this.state to this.props:
+                                ticketList={this.props.mainTicketList}
                                 // we pass our event handler as a prop,
                                 // which we'll again pass to each individual ticket
                                 onTicketSelection={this.handleChangingSelectedTicket} 
