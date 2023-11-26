@@ -15,4 +15,19 @@ describe('Help Queue Actions', () => {
     });
   });
 
+  test('addTicket should create ADD_TICKET action', () => {
+    expect(actions.addTicket({
+      names: 'Jo & Jasmine',
+      location: '3E',
+      issue: 'Redux is not working because we did not use RTK.',
+      id: 1
+    })).toEqual({
+      type: 'ADD_TICKET',
+      names: 'Jo & Jasmine',
+      location: '3E',
+      issue: 'Redux is not working because we did not use RTK.',
+      id: 1
+    });
+  });
+
 });
