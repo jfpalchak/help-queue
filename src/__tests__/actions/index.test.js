@@ -9,4 +9,10 @@ describe('Help Queue Actions', () => {
     });
   });
 
+  test('toggleForm should create TOGGLE_FORM action', () => {
+    expect(actions.toggleForm()).toEqual({
+      type: 'TOGGLE_FORM'
+    });
+  });
+
 });
