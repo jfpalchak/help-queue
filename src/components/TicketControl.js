@@ -13,7 +13,7 @@ class TicketControl extends React.Component {
     super(props);
     console.log(props);
     this.state = {
-      formVisibleOnPage: false, // local state (default does not show form)
+      // formVisibleOnPage: false, // local state (default does not show form) ! NOW IN REDUX STORE !
       selectedTicket: null, // local state (default no ticket is selected)
       editing: false // local state (default no ticket is being edited)
     };
@@ -25,16 +25,22 @@ class TicketControl extends React.Component {
     if (this.state.selectedTicket != null) {
 
       this.setState({
-        formVisibleOnPage: false,
+        // formVisibleOnPage: false, // IN REDUX STORE
         selectedTicket: null,
         editing: false
       });
 
     } else {
 
-      this.setState(prevState => ({
-        formVisibleOnPage: !prevState.formVisibleOnPage
-      }));
+      const { dispatch } = this.props;
+      const action = {
+        type: 'TOGGLE_FORM'
+      };
+      dispatch(action);
+
+      // this.setState(prevState => ({
+      //   formVisibleOnPage: !prevState.formVisibleOnPage
+      // }));
 
     }
   }
@@ -55,14 +61,22 @@ class TicketControl extends React.Component {
     // We dispatch our action and update the store:
     dispatch(action);
 
+    const action2 = {
+      type: 'TOGGLE_FORM'
+    };
+
+    dispatch(action2);
+
+    // REDUX REFACTOR, FROM:
     // In a larger application, too much local state cluttering up the Redux store
     // could become a code smell -> and because it's not entirely necessary,
     // we'll keep managing the local state here with this component method.
-    this.setState({
-      formVisibleOnPage: false
-    });
+    // Just kidding -> we're learning so we'll make a reducer to play with.
 
-    // REDUX REFACTOR, FROM:
+    // this.setState({
+    //   formVisibleOnPage: false
+    // });
+
     // const newMainTicketList = this.state.mainTicketList.concat(newTicket);
     // this.setState({mainTicketList: newMainTicketList,
     //               formVisibleOnPage: false });
