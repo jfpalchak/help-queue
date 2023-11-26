@@ -9,6 +9,8 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 // NOTE: Redux Toolkit ALREADY INCLUDES the package for redux, redux-thunk, and reselect
 // We could clean up our project and remove those packages listed in our package.json.
+
+// We might separate the store creation into its own file
 import { configureStore } from '@reduxjs/toolkit';
 import formVisibleReducer from './reducers/form-visible-reducer';
 import ticketListReducer from './reducers/ticket-list-reducer';

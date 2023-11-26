@@ -1,18 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import * as c from './../actions/ActionTypes';
+// import * as c from './../actions/ActionTypes';
 
-const reducer = (state = false, action) => {
-  switch(action.type) {
-    case c.TOGGLE_FORM:
-      return !state;
-    default:
-      return state;
-  }
-};
+// const reducer = (state = false, action) => {
+//   switch(action.type) {
+//     case c.TOGGLE_FORM:
+//       return !state;
+//     default:
+//       return state;
+//   }
+// };
 
 
 // RTK MIGRATION to createSlice
+// We might rename the file formSlice and move it to its own
+// feature directory with the appropriate components
 
 // createSlice uses a library called Immer, which uses a JS tool
 // called a Proxy to wrap the data we're providing and let us 
@@ -37,3 +39,6 @@ export const { formToggled } = formSlice.actions;
 export default formSlice.reducer;
 
 // export default reducer;
+
+// Anyways, typically it's worth avoiding having our Form state and other local state in the redux Store,
+// but hey, we're here to learn. 
