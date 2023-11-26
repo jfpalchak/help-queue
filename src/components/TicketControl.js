@@ -3,8 +3,10 @@ import NewTicketForm from "./NewTicketForm";
 import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
+
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import * as a from './../actions';
 
 
 class TicketControl extends React.Component {
@@ -33,11 +35,14 @@ class TicketControl extends React.Component {
     } else {
 
       const { dispatch } = this.props;
-      const action = {
-        type: 'TOGGLE_FORM'
-      };
+      // const action = {
+      //   type: 'TOGGLE_FORM'
+      // };
+      // ^ REFACTOR with Action Creator:
+      const action = a.toggleForm();
       dispatch(action);
 
+      // ^ REFACTOR with Redux, from:
       // this.setState(prevState => ({
       //   formVisibleOnPage: !prevState.formVisibleOnPage
       // }));
@@ -49,25 +54,29 @@ class TicketControl extends React.Component {
   // we'll pass this on to our form component as a prop!
   handleAddingNewTicketToList = (newTicket) => {
     const { dispatch } = this.props;
-    const { id, names, location, issue } = newTicket;
-    const action = {
-      type: 'ADD_TICKET',
-      id: id,
-      names: names,
-      location: location,
-      issue: issue
-    };
+    // const { id, names, location, issue } = newTicket;
+    // const action = {
+    //   type: 'ADD_TICKET',
+    //   id: id,
+    //   names: names,
+    //   location: location,
+    //   issue: issue
+    // };
+    // ^ REFACTOR with Action Creator:
+    const action = a.addTicket(newTicket);
 
     // We dispatch our action and update the store:
     dispatch(action);
 
-    const action2 = {
-      type: 'TOGGLE_FORM'
-    };
+    // const action2 = {
+    //   type: 'TOGGLE_FORM'
+    // };
+    // ^ REFACTOR with Action Creator:
+    const action2 = a.toggleForm();
 
     dispatch(action2);
 
-    // REDUX REFACTOR, FROM:
+    // ^ REDUX REFACTOR, from:
     // In a larger application, too much local state cluttering up the Redux store
     // could become a code smell -> and because it's not entirely necessary,
     // we'll keep managing the local state here with this component method.
@@ -100,10 +109,12 @@ class TicketControl extends React.Component {
   // this method handles deleting a targeted ticket
   handleDeletingTicket = (id) => {
     const { dispatch } = this.props;
-    const action = {
-      type: 'DELETE_TICKET',
-      id: id
-    };
+    // const action = {
+    //   type: 'DELETE_TICKET',
+    //   id: id
+    // };
+    // REFACTOR with Action Creator:
+    const action = a.deleteTicket(id);
 
     dispatch(action);
 
@@ -121,7 +132,6 @@ class TicketControl extends React.Component {
 
   // this method handles the rendering of our edit form
   handleEditClick = () => {
-    console.log("handleEditClick reached!");
     this.setState({editing: true});
   }
 
@@ -130,19 +140,21 @@ class TicketControl extends React.Component {
   handleEditingTicketInList = (ticketToEdit) => {
     
     const { dispatch } = this.props;
-    const { id, names, location, issue } = ticketToEdit;
-    const action = {
-      // NOTE: We use ADD_TICKET to edit our ticket as well.
-      // The only difference between adding or editing a ticket is the id property:
-      // If it's a new id, a new ticket is added to the store.
-      // If it's an id that already exists, that existing ticket is replaced.
-      // It might be more accurate to rename this action 'ADD_OR_UPDATE_TICKET'.
-      type: 'ADD_TICKET',
-      id: id,
-      names: names,
-      location: location,
-      issue: issue
-    };
+    // const { id, names, location, issue } = ticketToEdit;
+    // const action = {
+    //   // NOTE: We use ADD_TICKET to edit our ticket as well.
+    //   // The only difference between adding or editing a ticket is the id property:
+    //   // If it's a new id, a new ticket is added to the store.
+    //   // If it's an id that already exists, that existing ticket is replaced.
+    //   // It might be more accurate to rename this action 'ADD_OR_UPDATE_TICKET'.
+    //   type: 'ADD_TICKET',
+    //   id: id,
+    //   names: names,
+    //   location: location,
+    //   issue: issue
+    // };
+    // REFACTOR with Action Creator:
+    const action = a.addTicket(ticketToEdit);
 
     dispatch(action);
 
