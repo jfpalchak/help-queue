@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as a from './../actions';
 import { ticketAdded, ticketDeleted } from "../reducers/ticket-list-reducer";
+import { formToggled } from "../reducers/form-visible-reducer";
 
 
 class TicketControl extends React.Component {
@@ -60,8 +61,8 @@ class TicketControl extends React.Component {
 
     } else {
       const { dispatch } = this.props;
-      const action = a.toggleForm();
-      dispatch(action);
+      // const action = a.toggleForm();
+      dispatch(formToggled());
     }
   }
 
@@ -72,8 +73,8 @@ class TicketControl extends React.Component {
     // const action = a.addTicket(newTicket);
     dispatch(ticketAdded(newTicket));
 
-    const action2 = a.toggleForm();
-    dispatch(action2);
+    // const action2 = a.toggleForm();
+    dispatch(formToggled());
   }
 
   // this method handles click event on a ticket
@@ -162,7 +163,7 @@ TicketControl.propTypes = {
 const mapStateToProps = state => {
   return {
     mainTicketList: state.mainTicketList,
-    formVisibleOnPage: state.formVisibleOnPage
+    formVisibleOnPage: state.formVisibleOnPage.visible // we refactored our reducers initial state to be an object
   }
 };
 
