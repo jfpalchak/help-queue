@@ -7,8 +7,12 @@
 ## Technologies Used
 
 - JavaScript
-- React
-- Redux
+- React (v18.2.0)
+- Redux (v4.2.0)
+- React-Redux (v8.0.2)
+- RTK (v1.9.7)
+- Node (v16.13.1)
+- npm (v8.1.2)
 - CSS
 - HTML
 
@@ -17,7 +21,9 @@
 Help Queue is a simple React application intended only for practice & learning purposes. The application implements Redux for state management, and conditionally renders a number of different components: 
 * a list of tickets, 
 * a form to create a ticket, 
-* or a form to update or delete an existing ticket
+* or a form to update / delete an existing ticket
+
+This project contains multiple branches that show each step of implementing Redux, including a branch specifically for migrating from legacy Redux to Redux Toolkit, implementing best practices [according to official documentation](https://redux.js.org/usage/migrating-to-modern-redux).
 
 ## Setup & Installation
 
