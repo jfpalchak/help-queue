@@ -31,7 +31,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // };
 
 // RTK MIGRATION to createSlice
-// We might rename the file formSlice and move it to its own
+// We might rename the file ticketsSlice and move it to its own
 // feature directory with the appropriate components
 
 // - createSlice eliminates the hand-written action creators and action types ENTIRELY
