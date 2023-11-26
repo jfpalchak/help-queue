@@ -3,14 +3,24 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
-// Redux Imports:
-import { legacy_createStore as createStore } from 'redux';
+// import { legacy_createStore as createStore } from 'redux';
 // import reducer from './reducers/ticket-list-reducer';
-import rootReducer from './reducers/index';
+// import rootReducer from './reducers/index';
 import { Provider } from 'react-redux';
+// NOTE: Redux Toolkit ALREADY INCLUDES the package for redux, redux-thunk, and reselect
+// We could clean up our project and remove those packages listed in our package.json.
+import { configureStore } from '@reduxjs/toolkit';
+import formVisibleReducer from './reducers/form-visible-reducer';
+import ticketListReducer from './reducers/ticket-list-reducer';
 
+const store = configureStore({
+  reducer: {
+    mainTicketList: ticketListReducer,
+    formVisibleOnPage: formVisibleReducer
+  }
+})
 
-const store = createStore(rootReducer);
+// const store = createStore(rootReducer);
 
 // For dev purposes:
 store.subscribe( () => 
