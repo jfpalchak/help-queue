@@ -7,6 +7,7 @@ import EditTicketForm from "./EditTicketForm";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as a from './../actions';
+import { ticketAdded, ticketDeleted } from "../reducers/ticket-list-reducer";
 
 
 class TicketControl extends React.Component {
@@ -68,8 +69,8 @@ class TicketControl extends React.Component {
   // we'll pass this on to our form component as a prop!
   handleAddingNewTicketToList = (newTicket) => {
     const { dispatch } = this.props;
-    const action = a.addTicket(newTicket);
-    dispatch(action);
+    // const action = a.addTicket(newTicket);
+    dispatch(ticketAdded(newTicket));
 
     const action2 = a.toggleForm();
     dispatch(action2);
@@ -84,9 +85,9 @@ class TicketControl extends React.Component {
   // this method handles deleting a targeted ticket
   handleDeletingTicket = (id) => {
     const { dispatch } = this.props;
-    const action = a.deleteTicket(id);
+    // const action = a.deleteTicket(id);
 
-    dispatch(action);
+    dispatch(ticketDeleted(id));
 
     this.setState({
       selectedTicket: null
@@ -103,9 +104,9 @@ class TicketControl extends React.Component {
   handleEditingTicketInList = (ticketToEdit) => {
     
     const { dispatch } = this.props;
-    const action = a.addTicket(ticketToEdit);
+    // const action = a.addTicket(ticketToEdit);
 
-    dispatch(action);
+    dispatch(ticketAdded(ticketToEdit));
 
     this.setState({
       editing: false,
