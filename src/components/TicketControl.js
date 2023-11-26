@@ -6,7 +6,7 @@ import EditTicketForm from "./EditTicketForm";
 
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import * as a from './../actions';
+// import * as a from './../actions';
 import { ticketAdded, ticketDeleted } from "../reducers/ticket-list-reducer";
 import { formToggled } from "../reducers/form-visible-reducer";
 
@@ -166,6 +166,9 @@ const mapStateToProps = state => {
     formVisibleOnPage: state.formVisibleOnPage.visible // we refactored our reducers initial state to be an object
   }
 };
+
+// TO REFACTOR OUR CONNECT & MIGRATE TO HOOKS:
+// each individual field in mapState will become a separate useSelector call
 
 TicketControl = connect(mapStateToProps)(TicketControl);
 
