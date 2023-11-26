@@ -71,6 +71,7 @@ class TicketControl extends React.Component {
     // In a larger application, too much local state cluttering up the Redux store
     // could become a code smell -> and because it's not entirely necessary,
     // we'll keep managing the local state here with this component method.
+    
     // Just kidding -> we're learning so we'll make a reducer to play with.
 
     // this.setState({
@@ -182,7 +183,8 @@ class TicketControl extends React.Component {
                               />;
       buttonText = "Return to Ticket List";
     }
-    else if (this.state.formVisibleOnPage) {
+    // else if (this.state.formVisibleOnPage) {
+      else if (this.props.formVisibleOnPage) {
       currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList} />;
       buttonText = "Return to Ticket List";
     } else {
