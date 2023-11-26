@@ -3,11 +3,6 @@ import PropTypes from "prop-types";
 
 function TicketDetail(props) {
 
-  // We use object destructuring to derive both the ticket object
-  // and the onClickingDelete method from our props:
-  // if we didn't, we'd need to say 'props.ticket.location',
-  // instead of just 'ticket.location'
-  // the ticket prop passed down from TicketControl is an object containing an object!
   const { ticket, onClickingDelete, onClickingEdit } = props;
 
   return (
