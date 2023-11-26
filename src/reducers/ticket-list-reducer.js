@@ -1,3 +1,5 @@
+import * as c from './../actions/ActionTypes';
+
 // Our reducer is a pure function, 
 // not concerned about storing state, or mutating state.
 // It is only responsible for handling specific actions.
@@ -6,7 +8,7 @@ const reducer = (state = {}, action) => {
   const { names, location, issue, id } = action;
 
   switch(action.type) {
-    case 'ADD_TICKET':
+    case c.ADD_TICKET:
       // We clone the given state object, add a new ticket to the clone,
       // and we return that altered clone of the state object.
       return Object.assign({}, state, {
@@ -17,7 +19,7 @@ const reducer = (state = {}, action) => {
           id: id
         }
       });
-    case 'DELETE_TICKET':
+    case c.DELETE_TICKET:
       let newState = { ...state };
       delete newState[id];
       return newState;
