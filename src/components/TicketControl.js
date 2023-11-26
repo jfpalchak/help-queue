@@ -19,7 +19,32 @@ class TicketControl extends React.Component {
       selectedTicket: null, // local state (default no ticket is selected)
       editing: false // local state (default no ticket is being edited)
     };
-  }  
+  }
+
+  // TIMER to demonstrate lifecycle methods
+  componentDidMount() {
+    this.waitTimeUpdateTimer = setInterval(() => 
+      // the code to be executed
+      this.updateTicketElapsedWaitTime(),
+      // the delay between each interval
+      1000
+      );
+  }
+
+  componentDidUpdate() {
+    console.log("Component updated.");
+  }
+
+  componentWillUnmount() {
+    console.log("Component unmounted.");
+    clearInterval(this.waitTimeUpdateTimer);
+  }
+
+  updateTicketElapsedWaitTime = () => {
+    console.log("Tick");
+  }
+
+
 
   // handleClick toggles our state boolean on whether to show the form or not,
   // depending on if a ticket is currently showing or not showing
