@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit';
+
 import * as c from './../actions/ActionTypes';
 
 // Our reducer is a pure function, 
@@ -28,4 +30,39 @@ const reducer = (state = {}, action) => {
   }
 };
 
-export default reducer;
+// RTK MIGRATION to createSlice
+
+// - createSlice eliminates the hand-written action creators and action types ENTIRELY
+// - The uniquely named action.names and action.id fields are replaced by action.payload,
+// either as individual value or an object containing multiple values
+// --> Which means we don't need separate files for actions & reducers.
+// - NAMING: Ideally, reducers and actions should use the past tense and describe
+// "a thing that happened," ie, ticketAdded instead of ADD_TICKET
+
+const ticketListSlice = createSlice({
+  name: 'TICKETS',
+  initialState: {},
+  reducers: {
+    ticketAdded(state, action) {
+      const ticket = action.payload;
+      state[ticket.id] = ticket;
+    },
+    ticketDeleted(state, action) {
+      const ticketId = action.payload;
+      delete state[ticketId];
+    }
+  }
+});
+
+// When we call dispatch(ticketAdded(newTicket)), whatever values / objects
+// we pass as an argument will be used as the action.payload.
+// ALTERNATIVELY: We can use the "prepare" notation inside a createSlice reducer
+// to accept multiple separate arguments and create the payload field.
+// --> That could be useful for cases where the action creators are doing additional work
+// like generating unique IDs for each item.
+
+export const { ticketAdded, ticketDeleted } = ticketListSlice.actions;
+
+export default ticketListSlice.reducer;
+
+// export default reducer;
