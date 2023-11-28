@@ -21,12 +21,16 @@ describe('Help Queue Actions', () => {
       names: 'Jo & Jasmine',
       location: '3E',
       issue: 'Redux is not working because we did not use RTK.',
+      timeOpen: 0,
+      formattedWaitTime: 'less than a minute ago',
       id: 1
     })).toEqual({
       type: c.ADD_TICKET,
       names: 'Jo & Jasmine',
       location: '3E',
       issue: 'Redux is not working because we did not use RTK.',
+      timeOpen: 0,
+      formattedWaitTime: 'less than a minute ago',
       id: 1
     });
   });
