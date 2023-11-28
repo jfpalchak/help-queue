@@ -4,6 +4,8 @@ import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
 
+import { formatDistanceToNow } from "date-fns";
+
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as a from './../actions';
@@ -21,28 +23,38 @@ class TicketControl extends React.Component {
     };
   }
 
-  // TIMER to demonstrate lifecycle methods
+  // TIMER & LIFECYCLE METHODS
   componentDidMount() {
     this.waitTimeUpdateTimer = setInterval(() => 
       // the code to be executed
       this.updateTicketElapsedWaitTime(),
       // the delay between each interval
-      1000
+      60000 // every 60 seconds
       );
   }
 
-  componentDidUpdate() {
-    console.log("Component updated.");
-  }
-
   componentWillUnmount() {
-    console.log("Component unmounted.");
     clearInterval(this.waitTimeUpdateTimer);
   }
 
+  // calculate how much time has passed since ticket submission
   updateTicketElapsedWaitTime = () => {
-    console.log("Tick");
+    const { dispatch } = this.props;
+    // we could use map() here, but our function only has side effects (update store)
+    // and map is supposed to return something without side effects,
+    // so forEach better communicates our intentions
+
+    // this would not scale well with a larger 
+    Object.values(this.props.mainTicketList).forEach(ticket => {
+      const newFormattedWaitTime = formatDistanceToNow(ticket.timeOpen, {
+        addSuffix: true
+      });
+      const action = a.updateTime(ticket.id, newFormattedWaitTime);
+      dispatch(action);
+    })
   }
+
+  // HANDLER METHODS
 
   // handleClick toggles our state boolean on whether to show the form or not,
   // depending on if a ticket is currently showing or not showing

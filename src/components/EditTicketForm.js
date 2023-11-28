@@ -15,6 +15,8 @@ function EditTicketForm(props) {
       names: event.target.names.value,
       location: event.target.location.value,
       issue: event.target.issue.value,
+      timeOpen: ticket.timeOpen,
+      formattedWaitTime: ticket.formattedWaitTime,
       id: ticket.id
     });
   }
