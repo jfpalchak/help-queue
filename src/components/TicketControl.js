@@ -44,8 +44,6 @@ class TicketControl extends React.Component {
     console.log("Tick");
   }
 
-
-
   // handleClick toggles our state boolean on whether to show the form or not,
   // depending on if a ticket is currently showing or not showing
   handleClick = () => {
