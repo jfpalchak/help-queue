@@ -1,6 +1,6 @@
 import ticketListReducer from '../../reducers/ticket-list-reducer';
 import * as c from '../../actions/ActionTypes';
-import formatDistanceToNow from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 
 describe('ticketListReducer', () => {
 
