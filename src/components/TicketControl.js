@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NewTicketForm from "./NewTicketForm";
 import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
@@ -6,53 +6,40 @@ import EditTicketForm from "./EditTicketForm";
 
 function TicketControl() {
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     formVisibleOnPage: false, // state slice 1: local state (default does not show form)
-  //     mainTicketList: [], // state slice 2: shared state
-  //     selectedTicket: null, // state slice 3: local state (default no ticket is selected)
-  //     editing: false // state slice 4: local state (default no ticket is being edited)
-  //   };
-  // }  
+  const [formVisibleOnPage, setFormVisibleOnPage] = useState(false);
 
   // handleClick toggles our state boolean on whether to show the form or not,
   // depending on if a ticket is currently showing or not showing
   const handleClick = () => {
     if (this.state.selectedTicket != null) {
 
+      setFormVisibleOnPage(false);
+
       this.setState({
-        formVisibleOnPage: false,
+        // formVisibleOnPage: false,
         selectedTicket: null,
         editing: false
       });
 
     } else {
 
-      this.setState(prevState => ({
-        formVisibleOnPage: !prevState.formVisibleOnPage
-      }));
+      setFormVisibleOnPage(!formVisibleOnPage);
 
     }
   }
 
-  // this method handles the process of adding a new ticket to our mainTicketList state
-  // we'll pass this on to our form component as a prop!
+
   const handleAddingNewTicketToList = (newTicket) => {
-    // instead of directly altering the array, we make a new _COPY_ of the array,
-    // which is what we set the new value of mainTicketList to with setState
+
     const newMainTicketList = this.state.mainTicketList.concat(newTicket);
-    // We also make sure formVisibleOnPage is set to false, so the user can
-    // see the list of tickets again, not the form.
-    this.setState({mainTicketList: newMainTicketList,
-                  formVisibleOnPage: false });
+
+    this.setState({mainTicketList: newMainTicketList});
+
+    setFormVisibleOnPage(false);
   }
 
   // this method handles click event on a ticket
   const handleChangingSelectedTicket = (id) => {
-    // because we're using UUID's now, we know that only one ticket will match the id
-    // NOTE: because filter() returns an array, we use bracket notation to specify we want
-    // the first (and only element) in the returned array:
     const selectedTicket = this.state.mainTicketList.filter(ticket => ticket.id === id)[0];
     this.setState({selectedTicket: selectedTicket});
   }
@@ -108,7 +95,7 @@ function TicketControl() {
                             />;
     buttonText = "Return to Ticket List";
   }
-  else if (this.state.formVisibleOnPage) {
+  else if (formVisibleOnPage) {
     currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList} />;
     buttonText = "Return to Ticket List";
   } else {
