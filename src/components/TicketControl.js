@@ -1,180 +1,106 @@
-import React from "react";
+import React, { useState } from "react";
 import NewTicketForm from "./NewTicketForm";
 import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
 
-import { formatDistanceToNow } from "date-fns";
+function TicketControl() {
 
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import * as a from './../actions';
-
-
-class TicketControl extends React.Component {
-
-  constructor(props) {
-    super(props);
-    console.log(props);
-    this.state = {
-      // formVisibleOnPage: false, // local state (default does not show form) ! IN REDUX STORE !
-      selectedTicket: null, // local state (default no ticket is selected)
-      editing: false // local state (default no ticket is being edited)
-    };
-  }
-
-  // TIMER & LIFECYCLE METHODS
-  componentDidMount() {
-    this.waitTimeUpdateTimer = setInterval(() => 
-      // the code to be executed
-      this.updateTicketElapsedWaitTime(),
-      // the delay between each interval
-      60000 // every 60 seconds
-      );
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.waitTimeUpdateTimer);
-  }
-
-  // calculate how much time has passed since ticket submission
-  updateTicketElapsedWaitTime = () => {
-    const { dispatch } = this.props;
-    // we could use map() here, but our function only has side effects (update store)
-    // and map is supposed to return something without side effects,
-    // so forEach better communicates our intentions
-
-    // this would not scale well with a larger 
-    Object.values(this.props.mainTicketList).forEach(ticket => {
-      const newFormattedWaitTime = formatDistanceToNow(ticket.timeOpen, {
-        addSuffix: true
-      });
-      const action = a.updateTime(ticket.id, newFormattedWaitTime);
-      dispatch(action);
-    })
-  }
-
-  // HANDLER METHODS
+  const [formVisibleOnPage, setFormVisibleOnPage] = useState(false);
+  const [mainTicketList, setMainTicketList] = useState([]);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [editing, setEditing] = useState(false);
 
   // handleClick toggles our state boolean on whether to show the form or not,
   // depending on if a ticket is currently showing or not showing
-  handleClick = () => {
-    if (this.state.selectedTicket != null) {
-
-      this.setState({
-        // formVisibleOnPage: false, // IN REDUX STORE
-        selectedTicket: null,
-        editing: false
-      });
-
+  const handleClick = () => {
+    if (selectedTicket != null) {
+      setFormVisibleOnPage(false);
+      setSelectedTicket(null);
+      setEditing(false);
     } else {
-      const { dispatch } = this.props;
-      const action = a.toggleForm();
-      dispatch(action);
+      setFormVisibleOnPage(!formVisibleOnPage);
     }
   }
 
-  // this method handles the process of adding a new ticket to our mainTicketList state
-  // we'll pass this on to our form component as a prop!
-  handleAddingNewTicketToList = (newTicket) => {
-    const { dispatch } = this.props;
-    const action = a.addTicket(newTicket);
-    dispatch(action);
+  const handleAddingNewTicketToList = (newTicket) => {
+    const newMainTicketList = mainTicketList.concat(newTicket);
 
-    const action2 = a.toggleForm();
-    dispatch(action2);
+    setMainTicketList(newMainTicketList);
+    setFormVisibleOnPage(false);
   }
 
-  // this method handles click event on a ticket
-  handleChangingSelectedTicket = (id) => {
-    const selectedTicket = this.props.mainTicketList[id];
-    this.setState({selectedTicket: selectedTicket});
+  const handleChangingSelectedTicket = (id) => {
+    const selection = mainTicketList.filter(ticket => ticket.id === id)[0];
+    setSelectedTicket(selection);
   }
 
-  // this method handles deleting a targeted ticket
-  handleDeletingTicket = (id) => {
-    const { dispatch } = this.props;
-    const action = a.deleteTicket(id);
+  const handleDeletingTicket = (id) => {
+    const newMainTicketList = mainTicketList.filter(ticket => ticket.id !== id);
 
-    dispatch(action);
-
-    this.setState({
-      selectedTicket: null
-    });
+    setMainTicketList(newMainTicketList);
+    setSelectedTicket(null);
   }
 
   // this method handles the rendering of our edit form
-  handleEditClick = () => {
-    this.setState({editing: true});
+  const handleEditClick = () => {
+    setEditing(true);
   }
 
   // this method handles updating our shared state with the updated ticket,
   // as well as updating local state to decide what is rendered to the DOM
-  handleEditingTicketInList = (ticketToEdit) => {
-    
-    const { dispatch } = this.props;
-    const action = a.addTicket(ticketToEdit);
+  const handleEditingTicketInList = (ticketToEdit) => {
+    const editedMainTicketList = mainTicketList
+      .filter(ticket => ticket.id !== selectedTicket.id)
+      .concat(ticketToEdit);
 
-    dispatch(action);
-
-    this.setState({
-      editing: false,
-      selectedTicket: null
-    });
+    setMainTicketList(editedMainTicketList);
+    setEditing(false);
+    setSelectedTicket(null);
   }
 
-  // Conditional Rendering for TicketList/NewTicketForm/TicketDetail/EditTicketForm:
-  render() {
-    let currentlyVisibleState = null;
-    let buttonText = null;
+  // Conditional Rendering:
+  let currentlyVisibleState = null;
+  let buttonText = null;
 
-    if (this.state.editing) {
-      currentlyVisibleState= <EditTicketForm 
-                                ticket={this.state.selectedTicket} 
-                                onEditClick={this.handleEditingTicketInList}
-                              />
-      buttonText = "Return to Ticket List";
-    }
-    else if (this.state.selectedTicket != null) {
-      currentlyVisibleState = <TicketDetail 
-                                ticket={this.state.selectedTicket} 
-                                onClickingDelete={this.handleDeletingTicket}
-                                onClickingEdit={this.handleEditClick}
-                              />;
-      buttonText = "Return to Ticket List";
-    }
-      else if (this.props.formVisibleOnPage) {
-      currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList} />;
-      buttonText = "Return to Ticket List";
-    } else {
-      currentlyVisibleState = <TicketList 
-                                ticketList={this.props.mainTicketList}
-                                onTicketSelection={this.handleChangingSelectedTicket} 
-                              />;
-      buttonText = "Add Ticket";
-    }
-
-    return(
-      <React.Fragment>
-        {currentlyVisibleState}
-        <button onClick={this.handleClick}>{buttonText}</button>
-      </React.Fragment>
-    );
+  if (editing) {
+    currentlyVisibleState= 
+      <EditTicketForm 
+        ticket={selectedTicket} 
+        onEditClick={handleEditingTicketInList}
+      />
+    buttonText = "Return to Ticket List";
   }
+  else if (selectedTicket != null) {
+    currentlyVisibleState = 
+      <TicketDetail 
+        ticket={selectedTicket} 
+        onClickingDelete={handleDeletingTicket}
+        onClickingEdit={handleEditClick}
+      />;
+    buttonText = "Return to Ticket List";
+  }
+  else if (formVisibleOnPage) {
+    currentlyVisibleState = 
+      <NewTicketForm 
+        onNewTicketCreation={handleAddingNewTicketToList} 
+      />;
+    buttonText = "Return to Ticket List";
+  } else {
+    currentlyVisibleState = 
+      <TicketList 
+        ticketList={mainTicketList}
+        onTicketSelection={handleChangingSelectedTicket} 
+      />;
+    buttonText = "Add Ticket";
+  }
+
+  return(
+    <React.Fragment>
+      {currentlyVisibleState}
+      <button onClick={handleClick}>{buttonText}</button>
+    </React.Fragment>
+  );
 }
-
-TicketControl.propTypes = {
-  mainTicketList: PropTypes.object,
-  formVisibleOnPage: PropTypes.bool
-};
-
-const mapStateToProps = state => {
-  return {
-    mainTicketList: state.mainTicketList,
-    formVisibleOnPage: state.formVisibleOnPage
-  }
-};
-
-TicketControl = connect(mapStateToProps)(TicketControl);
 
 export default TicketControl;
