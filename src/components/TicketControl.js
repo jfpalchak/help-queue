@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NewTicketForm from "./NewTicketForm";
 import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
 
 import db from "./../firebase";
-import { collection, addDoc, onSnapshot } from 'firebase/firestore';
+import { 
+  collection, 
+  addDoc, 
+  doc, 
+  updateDoc, 
+  deleteDoc, 
+  onSnapshot 
+} from 'firebase/firestore';
 
 function TicketControl() {
 
@@ -13,6 +20,7 @@ function TicketControl() {
   const [mainTicketList, setMainTicketList] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [editing, setEditing] = useState(false);
+  const [error, setError] = useState(null);
 
   // we establish our Firestore database listener,
   // with a hook that runs only on first render
@@ -33,7 +41,10 @@ function TicketControl() {
         setMainTicketList(tickets);
       },
       (error) => {
-        // do something on error
+        // a Firestore error is returned as a FirestoreError object,
+        // which has a message property with a description of the error that occurred
+        // SO, if an error DOES occur:
+        setError(error.message);
       }
     );
 
@@ -101,15 +112,16 @@ function TicketControl() {
   let currentlyVisibleState = null;
   let buttonText = null;
 
-  if (editing) {
+  if (error) {
+    currentlyVisibleState = <p>There was an error: {error}</p>;
+  } else if (editing) {
     currentlyVisibleState= 
       <EditTicketForm 
         ticket={selectedTicket} 
         onEditClick={handleEditingTicketInList}
       />
     buttonText = "Return to Ticket List";
-  }
-  else if (selectedTicket != null) {
+  } else if (selectedTicket != null) {
     currentlyVisibleState = 
       <TicketDetail 
         ticket={selectedTicket} 
@@ -117,8 +129,7 @@ function TicketControl() {
         onClickingEdit={handleEditClick}
       />;
     buttonText = "Return to Ticket List";
-  }
-  else if (formVisibleOnPage) {
+  } else if (formVisibleOnPage) {
     currentlyVisibleState = 
       <NewTicketForm 
         onNewTicketCreation={handleAddingNewTicketToList} 
@@ -136,7 +147,7 @@ function TicketControl() {
   return(
     <React.Fragment>
       {currentlyVisibleState}
-      <button onClick={handleClick}>{buttonText}</button>
+      {error ? null : <button onClick={handleClick}>{buttonText}</button>}
     </React.Fragment>
   );
 }
