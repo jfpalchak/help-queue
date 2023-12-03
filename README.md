@@ -1,6 +1,6 @@
 # Help Queue
 
-#### A simple React application implementing Redux for state management. 
+#### A simple React application implementing a NoSQL database with Firestore & Redux for state management. 
 
 #### By Joey Palchak
 
@@ -13,17 +13,16 @@
 - RTK (v1.9.7)
 - Node (v16.13.1)
 - npm (v8.1.2)
+- Firebase (v9.23.0)
+- Firestore
 - CSS
 - HTML
 
 ## Description
 
-Help Queue is a simple React application intended only for practice & learning purposes. The application implements Redux for state management, and conditionally renders a number of different components: 
-* a list of tickets, 
-* a form to create a ticket, 
-* or a form to update / delete an existing ticket
+Help Queue is a simple React application intended only for practice & learning purposes. The application implements a NoSQL database with Firestore, as well as Redux for state management in certain branches.
 
-This project contains multiple branches that show each step of implementing Redux, including a branch specifically for migrating from legacy Redux to Redux Toolkit, implementing best practices [according to official documentation](https://redux.js.org/usage/migrating-to-modern-redux).
+This project contains multiple branches that show each step of implementing Firestore, Hooks, and/or Redux, including a branch specifically for migrating from legacy Redux to Redux Toolkit, implementing best practices [according to official documentation](https://redux.js.org/usage/migrating-to-modern-redux).
 
 ## Setup & Installation
 
