@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NewTicketForm from "./NewTicketForm";
 import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import { ticketAdded, ticketDeleted } from "../reducers/ticket-list-reducer";
 import { formToggled } from "../reducers/form-visible-reducer";
 
-
+// TODO: Refactor to function component, refactor state with redux hooks
 class TicketControl extends React.Component {
 
   constructor(props) {
@@ -22,6 +22,9 @@ class TicketControl extends React.Component {
       editing: false // local state (default no ticket is being edited)
     };
   }
+
+  // const [selectedTicket, setSelectedTicket] = useState(null);
+  // const [editing, setEditing] = useState(false);
 
   // TIMER to demonstrate lifecycle methods
   componentDidMount() {
