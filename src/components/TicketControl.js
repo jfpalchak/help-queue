@@ -4,6 +4,9 @@ import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
 
+import db from "./../firebase";
+import { collection, addDoc } from 'firebase/firestore';
+
 function TicketControl() {
 
   const [formVisibleOnPage, setFormVisibleOnPage] = useState(false);
@@ -23,10 +26,16 @@ function TicketControl() {
     }
   }
 
-  const handleAddingNewTicketToList = (newTicket) => {
-    const newMainTicketList = mainTicketList.concat(newTicket);
+  const handleAddingNewTicketToList = async (newTicketData) => {
 
-    setMainTicketList(newMainTicketList);
+    // we asynchronously add a new ticket document to our tickets collection
+    // collection() creates a CollectionReference object: 
+    // firestore looks to see if this collection exists, 
+    // and if it does not, simply creates one
+    // the second argument is the data we're adding to our database,
+    // which must always be a JavaScript object
+    await addDoc(collection(db, "tickets"), newTicketData);
+
     setFormVisibleOnPage(false);
   }
 
