@@ -5,7 +5,7 @@ import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
 
 import db from "./../firebase";
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot } from 'firebase/firestore';
 
 function TicketControl() {
 
@@ -13,6 +13,35 @@ function TicketControl() {
   const [mainTicketList, setMainTicketList] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [editing, setEditing] = useState(false);
+
+  // we establish our Firestore database listener,
+  // with a hook that runs only on first render
+  useEffect(() => {
+    const unSubscribe = onSnapshot(
+      collection(db, 'tickets'),
+      (collectionSnapshot) => {
+        const tickets = collectionSnapshot.docs.map((doc) => {
+          return {
+            // could also use spread operator, ie:
+            // ...doc.data(),
+            names: doc.data().names,
+            location: doc.data().location,
+            issue: doc.data().issue,
+            id: doc.id
+          };
+        });
+        setMainTicketList(tickets);
+      },
+      (error) => {
+        // do something on error
+      }
+    );
+
+    // we return a cleanup function that will unsubscribe from our listener
+    // when TicketControl unmounts
+    return () => unSubscribe();
+  }, []);
+
 
   // handleClick toggles our state boolean on whether to show the form or not,
   // depending on if a ticket is currently showing or not showing
