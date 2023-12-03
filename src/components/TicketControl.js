@@ -24,6 +24,8 @@ function TicketControl() {
 
   // we establish our Firestore database listener,
   // with a hook that runs only on first render
+  // any time our database collection of tickets is updated,
+  // we'll update our mainTicketList
   useEffect(() => {
     const unSubscribe = onSnapshot(
       collection(db, 'tickets'),
@@ -84,10 +86,10 @@ function TicketControl() {
     setSelectedTicket(selection);
   }
 
-  const handleDeletingTicket = (id) => {
-    const newMainTicketList = mainTicketList.filter(ticket => ticket.id !== id);
+  const handleDeletingTicket = async (id) => {
+    
+    await deleteDoc(doc(db, 'tickets', id));
 
-    setMainTicketList(newMainTicketList);
     setSelectedTicket(null);
   }
 
@@ -96,14 +98,12 @@ function TicketControl() {
     setEditing(true);
   }
 
-  // this method handles updating our shared state with the updated ticket,
+  // this method handles updating our database with the updated ticket,
   // as well as updating local state to decide what is rendered to the DOM
-  const handleEditingTicketInList = (ticketToEdit) => {
-    const editedMainTicketList = mainTicketList
-      .filter(ticket => ticket.id !== selectedTicket.id)
-      .concat(ticketToEdit);
+  const handleEditingTicketInList = async (ticketToEdit) => {
+    const ticketRef = doc(db, 'tickets', ticketToEdit.id);
+    await updateDoc(ticketRef, ticketToEdit);
 
-    setMainTicketList(editedMainTicketList);
     setEditing(false);
     setSelectedTicket(null);
   }
