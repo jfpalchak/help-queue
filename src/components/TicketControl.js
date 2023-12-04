@@ -4,7 +4,7 @@ import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
 
-import db from "./../firebase";
+import { db } from "./../firebase";
 import { 
   collection, 
   addDoc, 
