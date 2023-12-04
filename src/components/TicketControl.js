@@ -35,7 +35,7 @@ function TicketControl() {
           // get the value of the timeOpen field of the current document,
           // then, call the Timestamp.toDate() method on the returned Firestore Timestamp object,
           // and turn it into data that's formatted for JavaScript
-          const timeOpen = doc.get('timeOpen', {serverTimeStamps: "estimate"}).toDate();
+          const timeOpen = doc.get('timeOpen', {serverTimestamps: "estimate"}).toDate();
           const jsDate = new Date(timeOpen);
 
           return {

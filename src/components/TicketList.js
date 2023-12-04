@@ -12,6 +12,7 @@ function TicketList(props) {
           names={ticket.names}
           location={ticket.location}
           issue={ticket.issue}
+          formattedWaitTime={ticket.formattedWaitTime}
           key={ticket.id} // key is required, but we set it to the ticket's ID
           // we can't pass keys as props to child components, so we add an ID prop:
           id={ticket.id}
