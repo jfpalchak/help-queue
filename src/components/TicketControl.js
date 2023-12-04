@@ -3,7 +3,7 @@ import NewTicketForm from "./NewTicketForm";
 import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
-
+import { formatDistanceToNow } from "date-fns";
 import { db, auth } from "./../firebase";
 import { 
   collection, 
@@ -31,12 +31,21 @@ function TicketControl() {
       collection(db, 'tickets'),
       (collectionSnapshot) => {
         const tickets = collectionSnapshot.docs.map((doc) => {
+          // turn the Firestore server timestamp into a JS Date object:
+          // get the value of the timeOpen field of the current document,
+          // then, call the Timestamp.toDate() method on the returned Firestore Timestamp object,
+          // and turn it into data that's formatted for JavaScript
+          const timeOpen = doc.get('timeOpen', {serverTimeStamps: "estimate"}).toDate();
+          const jsDate = new Date(timeOpen);
+
           return {
             // could also use spread operator, ie:
             // ...doc.data(),
             names: doc.data().names,
             location: doc.data().location,
             issue: doc.data().issue,
+            timeOpen: jsDate,
+            formattedWaitTime: formatDistanceToNow(jsDate),
             id: doc.id
           };
         });
@@ -116,7 +125,7 @@ function TicketControl() {
         <h1>You must be signed in to access the queue.</h1>
       </>
     );
-    
+
   // IF USER IS LOGGED IN:
   } else if (auth.currentUser != null) {
     let currentlyVisibleState = null;
