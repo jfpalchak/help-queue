@@ -11,7 +11,9 @@ import {
   doc, 
   updateDoc, 
   deleteDoc, 
-  onSnapshot 
+  onSnapshot,
+  query,
+  orderBy
 } from 'firebase/firestore';
 
 function TicketControl() {
@@ -27,10 +29,16 @@ function TicketControl() {
   // any time our database collection of tickets is updated,
   // we'll update our mainTicketList
   useEffect(() => {
-    const unSubscribe = onSnapshot(
+    // create a Firestore query to order our 
+    // tickets by Creation Timestamp:
+    const queryByTimestamp = query(
       collection(db, 'tickets'),
-      (collectionSnapshot) => {
-        const tickets = collectionSnapshot.docs.map((doc) => {
+      orderBy('timeOpen', 'desc')
+    );
+    const unSubscribe = onSnapshot(
+      queryByTimestamp, // pass in our query
+      (querySnapshot) => {
+        const tickets = querySnapshot.docs.map((doc) => {
           // turn the Firestore server timestamp into a JS Date object:
           // get the value of the timeOpen field of the current document,
           // then, call the Timestamp.toDate() method on the returned Firestore Timestamp object,
