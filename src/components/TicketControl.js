@@ -58,11 +58,27 @@ function TicketControl() {
         setError(error.message);
       }
     );
-
     // we return a cleanup function that will unsubscribe from our listener
     // when TicketControl unmounts
     return () => unSubscribe();
   }, []);
+
+  useEffect(() => {
+    function updateTicketElapsedWaitTime() {
+      const newMainTicketList = mainTicketList.map(ticket => {
+        const newFormattedWaitTime = formatDistanceToNow(ticket.timeOpen);
+        return {...ticket, formattedWaitTime: newFormattedWaitTime};
+      });
+      setMainTicketList(newMainTicketList);
+    }
+
+    const waitTimeInterval = setInterval(() =>
+      updateTicketElapsedWaitTime(),
+      60000
+    );
+
+    return () => clearInterval(waitTimeInterval);
+  }, [mainTicketList]);
 
 
   // handleClick toggles our state boolean on whether to show the form or not,
