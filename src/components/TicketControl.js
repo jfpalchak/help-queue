@@ -4,7 +4,7 @@ import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
 
-import { db } from "./../firebase";
+import { db, auth } from "./../firebase";
 import { 
   collection, 
   addDoc, 
@@ -109,47 +109,58 @@ function TicketControl() {
   }
 
   // Conditional Rendering:
-  let currentlyVisibleState = null;
-  let buttonText = null;
+  // IF USER IS NOT LOGGED IN:
+  if (auth.currentUser == null) {
+    return (
+      <>
+        <h1>You must be signed in to access the queue.</h1>
+      </>
+    );
+    
+  // IF USER IS LOGGED IN:
+  } else if (auth.currentUser != null) {
+    let currentlyVisibleState = null;
+    let buttonText = null;
 
-  if (error) {
-    currentlyVisibleState = <p>There was an error: {error}</p>;
-  } else if (editing) {
-    currentlyVisibleState= 
-      <EditTicketForm 
-        ticket={selectedTicket} 
-        onEditClick={handleEditingTicketInList}
-      />
-    buttonText = "Return to Ticket List";
-  } else if (selectedTicket != null) {
-    currentlyVisibleState = 
-      <TicketDetail 
-        ticket={selectedTicket} 
-        onClickingDelete={handleDeletingTicket}
-        onClickingEdit={handleEditClick}
-      />;
-    buttonText = "Return to Ticket List";
-  } else if (formVisibleOnPage) {
-    currentlyVisibleState = 
-      <NewTicketForm 
-        onNewTicketCreation={handleAddingNewTicketToList} 
-      />;
-    buttonText = "Return to Ticket List";
-  } else {
-    currentlyVisibleState = 
-      <TicketList 
-        ticketList={mainTicketList}
-        onTicketSelection={handleChangingSelectedTicket} 
-      />;
-    buttonText = "Add Ticket";
+    if (error) {
+      currentlyVisibleState = <p>There was an error: {error}</p>;
+    } else if (editing) {
+      currentlyVisibleState= 
+        <EditTicketForm 
+          ticket={selectedTicket} 
+          onEditClick={handleEditingTicketInList}
+        />
+      buttonText = "Return to Ticket List";
+    } else if (selectedTicket != null) {
+      currentlyVisibleState = 
+        <TicketDetail 
+          ticket={selectedTicket} 
+          onClickingDelete={handleDeletingTicket}
+          onClickingEdit={handleEditClick}
+        />;
+      buttonText = "Return to Ticket List";
+    } else if (formVisibleOnPage) {
+      currentlyVisibleState = 
+        <NewTicketForm 
+          onNewTicketCreation={handleAddingNewTicketToList} 
+        />;
+      buttonText = "Return to Ticket List";
+    } else {
+      currentlyVisibleState = 
+        <TicketList 
+          ticketList={mainTicketList}
+          onTicketSelection={handleChangingSelectedTicket} 
+        />;
+      buttonText = "Add Ticket";
+    }
+
+    return(
+      <React.Fragment>
+        {currentlyVisibleState}
+        {error ? null : <button onClick={handleClick}>{buttonText}</button>}
+      </React.Fragment>
+    );
   }
-
-  return(
-    <React.Fragment>
-      {currentlyVisibleState}
-      {error ? null : <button onClick={handleClick}>{buttonText}</button>}
-    </React.Fragment>
-  );
 }
 
 export default TicketControl;
