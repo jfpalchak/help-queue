@@ -1,6 +1,6 @@
 import React from "react";
 
-export const theme = {
+export const themes = {
   light: {
     backgroundColor: "AntiqueWhite",
     textColor: "DarkSlateGrey",
