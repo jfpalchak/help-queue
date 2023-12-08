@@ -8,6 +8,9 @@ function App() {
 
   const [theme, setTheme] = useState(themes.light);
 
+  document.body.style.backgroundColor = theme.backgroundColor;
+  document.body.style.color = theme.textColor;
+
   const toggleTheme = () => {
     setTheme(theme => theme.textColor === "AntiqueWhite" ? themes.light : themes.dark);
   }
