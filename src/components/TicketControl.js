@@ -3,6 +3,7 @@ import NewTicketForm from "./NewTicketForm";
 import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import EditTicketForm from "./EditTicketForm";
+import { ThemeContext } from "../context/theme-context";
 
 class TicketControl extends React.Component {
 
@@ -76,6 +77,16 @@ class TicketControl extends React.Component {
 
   // Conditional Rendering for TicketList/NewTicketForm/TicketDetail/EditTicketForm:
   render() {
+
+    // <context>
+    let theme = this.context;
+
+    const buttonStyles = {
+      backgroundColor: theme.buttonBackground,
+      color: theme.textColor
+    };
+    // </context>
+
     let currentlyVisibleState = null;
     let buttonText = null;
 
@@ -114,10 +125,13 @@ class TicketControl extends React.Component {
     return(
       <React.Fragment>
         {currentlyVisibleState}
-        <button onClick={this.handleClick}>{buttonText}</button>
+        <button style={buttonStyles} onClick={this.handleClick}>{buttonText}</button>
       </React.Fragment>
     );
   }
 }
+
+// Create a contextType property and set it to ThemeContext
+TicketControl.contextType = ThemeContext;
 
 export default TicketControl;
