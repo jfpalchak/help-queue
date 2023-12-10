@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
+import { ThemeContext } from "../context/theme-context";
 
 function TicketDetail(props) {
 
-  // We use object destructuring to derive both the ticket object
-  // and the onClickingDelete method from our props:
-  // if we didn't, we'd need to say 'props.ticket.location',
-  // instead of just 'ticket.location'
-  // the ticket prop passed down from TicketControl is an object containing an object!
   const { ticket, onClickingDelete, onClickingEdit } = props;
+
+  const theme = useContext(ThemeContext);
+
+  if (!theme) {
+    throw new Error("ThemeContext must be used within a ThemeContext.Provider!");
+  }
+
+  const styles = {
+    backgroundColor: theme.buttonBackground,
+    color: theme.textColor
+  };
 
   return (
     <React.Fragment>
@@ -16,8 +23,8 @@ function TicketDetail(props) {
       <h3>{ticket.location} - {ticket.names}</h3>
       <p><em>{ticket.issue}</em></p>
 
-      <button onClick={onClickingEdit}>Update Ticket</button>
-      <button onClick={() => onClickingDelete(ticket.id)}>Close Ticket</button>
+      <button style={styles} onClick={onClickingEdit}>Update Ticket</button>
+      <button style={styles} onClick={() => onClickingDelete(ticket.id)}>Close Ticket</button>
 
       <hr/>
     </React.Fragment>
